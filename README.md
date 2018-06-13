@@ -18,7 +18,7 @@ mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" sec
 sudo port install mcl
 ```
 
-- Following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through:
+- The following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through:
 
 ```
-pip install
+pip install biopython scipy numpy fastcluster
