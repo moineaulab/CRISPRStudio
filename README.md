@@ -40,11 +40,12 @@ python CRISPRStudio_1.0.py -i test.gff
 -h  help message
 -i  GFF3 file generated with CRISPRDetect (compulsory)
 -l  generate the figure with a subset of isolates listed in the file (optional: by default, will generate a figure with all the strains)
--g  gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a unique color for each cluster of spacer)
--f
--s
--r
--c
+-g  gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a 
+unique color for each cluster of spacer)
+-f  Verification of the fasta file generated from the GFF file will be skipped if this flag is provided (optional, by default, the verification is mainly based on the length of the spacer sequences. If a spacer is 1.5 time shorter or longer than the average spacer size of the dataset, a warning is raised and the script stops). Correction can be either made in the initial gff file or in the fasta file. If the latter, provide the name of the fasta file after the flag (ex. -f corrected_sequences.fasta)
+-s  Strain sorting in the figure (optional, by default, CRISPRDetect gff output file sorting). Available option: CRISPRDetect, HClust, File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. HClust = Order based on hiearchical clustering of a distance matrix. File = Order provided in a single column file with the strain names as they should appear in the figure.
+-r  Use this option to keep the same color attributed to the spacer during a previous analysis (optional, by default, will attribute new random colors each time the command is executed). This option may be useful when appending a preexisting dataset with new sequences if you want to have reproducible results. When new sequences are added, they are aligned and clustered with the entire dataset and random colors are assigned only to new clusters, assuming new clusters are formed.
+-c  score cutoff for pairing of the spacers (optional, by default = 2)
 ```
 
 ### Additional information
