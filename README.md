@@ -39,12 +39,22 @@ python CRISPRStudio_1.0.py -i test.gff
 ```
 -h  help message
 -i  GFF3 file generated with CRISPRDetect (compulsory)
--l  will generate the figure with a subset
-    of isolates listed in the file
--g
+-l  generate the figure with a subset of isolates listed in the file (optional: by default, will generate a figure with all the strains)
+-g  gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a                     unique color for each cluster of spacer)
 -f
 -s
 -r
 -c
+```
 
+### Additional information
 
+Link to CRISPRDetect:
+
+-  online platform: http://brownlabtools.otago.ac.nz/CRISPRDetect/predict_crispr_array.html
+
+-  repository for local installation: https://github.com/ambarishbiswas/CRISPRDetect_2.2
+
+If you use the online platform, simply run the analysis, click on "Annotation file in GFF format" (top right section of the output), then copy and paste in a text editor to save on your computer.
+
+If you use CRISPRDetect locally, make sure you adjust the -array_quality_score_cutoff parameter according to the input file you're providing (genbank file = default value (4), fasta file = 3)
