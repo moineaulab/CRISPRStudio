@@ -8,7 +8,7 @@ CRISPRStudio is a program developed to facilitate and accelerate CRISPR array vi
 
 Simply download the CRISPRStudio python script (.py).
 
-## Software requirements
+### Software requirements
 
 The following dependencies are required by CRISPRStudio
 
@@ -34,5 +34,5 @@ pip install biopython scipy numpy fastcluster
 python CRISPRStudio_1.0.py -i test.gff
 ```
 
-## Additional options
+### Additional options
 
