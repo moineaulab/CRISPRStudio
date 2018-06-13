@@ -12,8 +12,7 @@ Software requirements:
 
 fasta36:
 
-mcl: The sofware can be downloaded at https://micans.org/mcl/ or through MacPorts
+mcl can be downloaded at https://micans.org/mcl/ or through MacPorts:
 
 ```
 sudo port install mcl
-
