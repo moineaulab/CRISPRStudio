@@ -1,8 +1,9 @@
 <img src="https://github.com/moineaulab/CRISPRStudio/blob/master/CRISPRStudio_logo.png" width="250">
 
-## Description of CRISPRStudio
+## Introduction
 
-### blablabla
+CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor.
 
-#### 1 2 3 4
+## Download
+
 
