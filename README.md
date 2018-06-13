@@ -6,6 +6,8 @@ CRISPRStudio is a program developed to facilitate and accelerate CRISPR array vi
 
 # Installation
 
+Simply download the CRISPRStudio python script (.py).
+
 ## Software requirements
 
 The following dependencies are required by CRISPRStudio
@@ -24,3 +26,13 @@ sudo port install mcl
 
 ```
 pip install biopython scipy numpy fastcluster
+```
+
+# Basic command
+
+```
+python CRISPRStudio_1.0.py -i test.gff
+```
+
+## Additional options
+
