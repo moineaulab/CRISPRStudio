@@ -40,7 +40,7 @@ python CRISPRStudio_1.0.py -i test.gff
 -h  help message
 -i  GFF3 file generated with CRISPRDetect (compulsory)
 -l  generate the figure with a subset of isolates listed in the file (optional: by default, will generate a figure with all the strains)
--g  gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a                     unique color for each cluster of spacer)
+-g  gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a unique color for each cluster of spacer)
 -f
 -s
 -r
