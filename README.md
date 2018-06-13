@@ -1,4 +1,4 @@
-# CRISPRStudio
+<img src="https://github.com/moineaulab/CRISPRStudio/blob/master/CRISPRStudio_logo.png" width="250">
 
 ## Description of CRISPRStudio
 
@@ -6,4 +6,3 @@
 
 #### 1 2 3 4
 
-<img src="https://github.com/moineaulab/CRISPRStudio/blob/master/CRISPRStudio_logo.png" width="250">
