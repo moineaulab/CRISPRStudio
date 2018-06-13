@@ -10,9 +10,15 @@ Software requirements:
 
 -Local installation of fasta36 and mcl
 
-fasta36:
+fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/
 
-mcl can be downloaded at https://micans.org/mcl/ or through MacPorts:
+mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" section, or through MacPorts:
 
 ```
 sudo port install mcl
+```
+
+- Following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through
+
+```
+pip install
