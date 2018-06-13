@@ -10,6 +10,6 @@ Software requirements:
 
 -Local installation of fasta36 and mcl
 
-  fasta36:
+    fasta36:
   
-  mcl:
+    mcl:
