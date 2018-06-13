@@ -8,7 +8,7 @@ CRISPRStudio is a program developed to facilitate and accelerate CRISPR array vi
 
 Software requirements:
 
--Local installation of fasta36 and mcl
+- Local installation of fasta36 and mcl
 
 fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/
 
@@ -18,7 +18,7 @@ mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" sec
 sudo port install mcl
 ```
 
-- Following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through
+- Following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through:
 
 ```
 pip install
