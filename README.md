@@ -2,8 +2,10 @@
 
 ## Introduction
 
-CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor.
+CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning a two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor.
 
 ## Download
 
+Software requirements:
 
+-Local installation of fasta36 and mcl
