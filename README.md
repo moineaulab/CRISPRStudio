@@ -10,6 +10,10 @@ Software requirements:
 
 -Local installation of fasta36 and mcl
 
-    fasta36:
-  
-    mcl:
+fasta36:
+
+mcl: The sofware can be downloaded at https://micans.org/mcl/ or through MacPorts
+
+```
+sudo port install mcl
+
