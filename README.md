@@ -7,4 +7,9 @@ CRISPRStudio is a program developed to facilitate and accelerate CRISPR array vi
 ## Download
 
 Software requirements:
+
 -Local installation of fasta36 and mcl
+
+  fasta36:
+  
+  mcl:
