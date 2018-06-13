@@ -34,5 +34,17 @@ pip install biopython scipy numpy fastcluster
 python CRISPRStudio_1.0.py -i test.gff
 ```
 
-### Additional options
+### Parameters
+
+```
+-h  help message
+-i  GFF3 file generated with CRISPRDetect (compulsory)
+-l  will generate the figure with a subset
+    of isolates listed in the file
+-g
+-f
+-s
+-r
+-c
+
 
