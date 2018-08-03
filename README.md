@@ -18,16 +18,24 @@ The following dependencies are required by CRISPRStudio
 
 fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/ (make sure that the folder with the executable was added in your path)
 
-mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" section, or through MacPorts:
+mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" section 
+
+or on Mac:
 
 ```
 sudo port install mcl
 ```
 
+or on Linux:
+
+```
+sudo apt-get install mcl
+```
+
 - The following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through:
 
 ```
-pip install biopython scipy numpy fastcluster
+pip3 install biopython scipy numpy fastcluster
 ```
 
 # Basic command
@@ -42,7 +50,7 @@ python CRISPRStudio_1.0.py -i test.gff
 
 + i: GFF3 file generated with CRISPRDetect (compulsory)
 
-+ l: generate the figure with a subset of isolates listed in the file (optional: by default, will generate a figure with all the strains)
++ l: generate the figure with a subset of isolates listed in the file (optional: by default, will generate a figure with all the strains. You need to provided a txt file with the list of the sample names exactly as they appear in the CRISPRDetect output file)
 
 + g: gray out unique spacers, so that only spacers present twice in the dataset remain colored (optional, by default will attribute a unique color for each cluster of spacer)
 
@@ -50,7 +58,7 @@ python CRISPRStudio_1.0.py -i test.gff
 
 + s: strain sorting in the figure (optional, by default, CRISPRDetect gff output file sorting). Available option: CRISPRDetect, HClust, File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. HClust = Order based on hiearchical clustering of a distance matrix. File = Order provided in a single column file with the strain names as they should appear in the figure.
 
-+ r: use this option to keep the same color attributed to the spacer during a previous analysis (optional, by default, will attribute new random colors each time the command is executed). This option may be useful when appending a preexisting dataset with new sequences if you want to have reproducible results. When new sequences are added, they are aligned and clustered with the entire dataset and random colors are assigned only to new clusters, assuming new clusters are formed.
++ r: use this option to keep the same color attributed to the spacer during a previous analysis (optional, by default, will attribute new random colors each time the command is executed). This option may be useful when appending a preexisting dataset with new sequences if you want to have reproducible results. Run your new sequences with CRISPRDetect and copy the result at the end of your initial CRISPRDetect gff file, without changing the name of your initial file. When new sequences are added, they are aligned and clustered with the entire dataset and random colors are assigned only to new clusters, assuming new clusters are formed.
 
 + c: score cutoff for pairing of the spacers (optional, by default = 2)
 
