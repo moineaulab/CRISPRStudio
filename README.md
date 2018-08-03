@@ -2,7 +2,9 @@
 
 # Introduction
 
-CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning a two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor.
+CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning a two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor. 
+
+It runs on any Unix operating system equipped with the software requirements mentioned below. If your computer runs Windows 10, you can also install the Ubuntu terminal.
 
 # Installation
 
@@ -73,3 +75,5 @@ Link to CRISPRDetect:
 If you use the online platform, simply run the analysis, click on "Annotation file in GFF format" (top right section of the output), then copy and paste in a text editor to save on your computer.
 
 If you use CRISPRDetect locally, make sure you adjust the -array_quality_score_cutoff parameter according to the input file you're providing (genbank file = default value (4), fasta file = 3)
+
+Link to install Ubuntu for Windows 10: https://tutorials.ubuntu.com/tutorial/tutorial-ubuntu-on-windows#0
