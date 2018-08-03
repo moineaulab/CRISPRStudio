@@ -41,7 +41,7 @@ pip3 install biopython scipy numpy fastcluster
 # Basic command
 
 ```
-python CRISPRStudio_1.0.py -i test.gff
+python CRISPRStudio_1.0.py -i salmonella_test.gff
 ```
 
 ### Parameters
