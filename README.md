@@ -64,9 +64,9 @@ python CRISPRStudio_1.0.py -i test.gff
 -c  score cutoff for pairing of the spacers (optional, by default = 2)
 ```
 
-### Additional information
+# Additional information
 
-_Link to CRISPRDetect:_
+###Link to CRISPRDetect:
 
 -  online platform: http://brownlabtools.otago.ac.nz/CRISPRDetect/predict_crispr_array.html
 
@@ -76,4 +76,6 @@ If you use the online platform, simply run the analysis, click on "Annotation fi
 
 If you use CRISPRDetect locally, make sure you adjust the -array_quality_score_cutoff parameter according to the input file you're providing (genbank file = default value (4), fasta file = 3)
 
-_Link to install Ubuntu for Windows 10:_ https://tutorials.ubuntu.com/tutorial/tutorial-ubuntu-on-windows#0
+###Link to install Ubuntu for Windows 10: 
+
+https://tutorials.ubuntu.com/tutorial/tutorial-ubuntu-on-windows#0
