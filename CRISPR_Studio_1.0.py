@@ -148,17 +148,22 @@ def fastaAlign(outFasta):
     subject= outFasta
     outfmt=str(8) # output fasta alignment result in a tabular format
     outFile=outFasta+'_fasta36'
+
     try:
         print('Aligning the spacers with fasta36 aligner')
-        subprocess.check_output('fasta36 -m '+outfmt +' '+  query + ' ' + subject + ' >'+outFile , shell=True)
+        path = os.path.dirname(os.path.realpath(sys.argv[0]))
+        subprocess.check_output(os.path.join(path, 'tools/fasta-36.3.8g/bin/fasta36') + ' -m ' + outfmt + ' ' + query + ' ' + subject + ' >' + outFile, shell=True)
     except:
-        print('fasta36 not found, trying with fasta36.exe')
         try:
-            print("Aligning the spacers with fasta36.exe aligner")
-            subprocess.check_output('fasta36.exe -m '+outfmt +' '+  query + ' ' + subject + ' >'+outFile , shell=True)
+            subprocess.check_output('fasta36 -m '+outfmt +' '+  query + ' ' + subject + ' >'+outFile , shell=True)
         except:
-            print("##### ERROR #####\nfasta36 alignment program was not found, please make sure that the latest version of fasta is installed on your system and that the folder with the executable was added in your path\nThe sofware can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/")
-            sys.exit()
+            print('fasta36 not found, trying with fasta36.exe')
+            try:
+                print("Aligning the spacers with fasta36.exe aligner")
+                subprocess.check_output('fasta36.exe -m '+outfmt +' '+  query + ' ' + subject + ' >'+outFile , shell=True)
+            except:
+                print("##### ERROR #####\nfasta36 alignment program was not found, please make sure that the latest version of fasta is installed on your system and that the folder with the executable was added in your path\nThe sofware can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/")
+                sys.exit()
 
 # The function extractMatch finds identical spacers by filtering the alignment results
 # and keeping only spacer pairs with a number of mismatches small than or equal to a cutoff
