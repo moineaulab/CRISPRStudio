@@ -33,7 +33,7 @@ pip3 install scikit-bio pandas scipy numpy
 # Basic command
 
 ```
-python CRISPR_Studio_1.0.py -i salmonella_test.gff
+python CRISPR_Studio_1.0.py -i figure3.gff
 ```
 
 ### Parameters
@@ -48,7 +48,7 @@ python CRISPR_Studio_1.0.py -i salmonella_test.gff
 
 + f: verification of the fasta file generated from the GFF file will be skipped if this flag is provided (optional, by default, the verification is mainly based on the length of the spacer sequences. If a spacer is 1.5 time shorter or longer than the average spacer size of the dataset, a warning is raised and the script stops). Correction can be either made in the initial gff file or in the fasta file. If the latter, provide the name of the fasta file after the flag (ex. -f corrected_sequences.fasta)
 
-+ s: strain sorting in the figure (optional, by default, CRISPRDetect gff output file sorting). Available option: CRISPRDetect, HClust, File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. HClust = Order based on hiearchical clustering of a distance matrix. File = Order provided in a single column file with the strain names as they should appear in the figure.
++ s: sorting of the isolates in the figure: Available options: CRISPRDetect, DistMatrix or File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. DistMatrix = Order extracted from a distance matrix based on the similarity of the arrays in the isolates. File = Order provided in a single column file with the isolates names as the should appear in the figure. The option -l overrides this option (Default: DistMatrix)
 
 + r: use this option to keep the same color attributed to the spacer during a previous analysis (optional, by default, will attribute new random colors each time the command is executed). This option may be useful when appending a preexisting dataset with new sequences if you want to have reproducible results. Run your new sequences with CRISPRDetect and copy the result at the end of your initial CRISPRDetect gff file, without changing the name of your initial file. When new sequences are added, they are aligned and clustered with the entire dataset and random colors are assigned only to new clusters, assuming new clusters are formed.
 
