@@ -8,34 +8,26 @@ It runs on any Unix operating system equipped with the software requirements men
 
 # Installation
 
-Simply download the CRISPRStudio python script (.py).
+## Automatic installation
+A script is provided to install the required software and python modules (python3 and pip should already be installed on your system).
+```
+git clone https://github.com/moineaulab/CRISPRStudio.git
+cd CRISPRStudio
+./Install.sh
+```
+In case this failed, you can try to fix it, raise an issue on the github page or perform a manual installation.
 
-### Software requirements
+## Manual installation
+Download this git repository and install the following dependencies:
 
-The following dependencies are required by CRISPRStudio
-
-- Local installation of fasta36 and mcl
+- Local installation of fasta36
 
 fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/ (make sure that the folder with the executable was added in your path)
 
-mcl can be downloaded at https://micans.org/mcl/ in the "License & Software" section 
-
-or on Mac:
+- The following python modules: scikit-bio, pandas, scipy and numpy which can be installed through:
 
 ```
-sudo port install mcl
-```
-
-or on Linux:
-
-```
-sudo apt-get install mcl
-```
-
-- The following python modules: BioPython, Scipy, Numpy, Fastcluster which can be installed through:
-
-```
-pip3 install biopython scipy numpy fastcluster
+pip3 install scikit-bio pandas scipy numpy
 ```
 
 # Basic command

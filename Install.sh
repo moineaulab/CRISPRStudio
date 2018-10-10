@@ -30,7 +30,6 @@ echo "Fasta36 successfully installed"
 
 
 echo "Checking python installation and installing missing modules..."
-echo $(pwd)
 if [[ "$(python --version 2>&1)" == *" 3."* ]] || [[ "$(python3 --version 2>&1)" == *" 3."* ]]; then
     echo "Checking pip installation..."
     if [[ "$(pip --version 2>&1)" == *"python 3."* ]]; then
