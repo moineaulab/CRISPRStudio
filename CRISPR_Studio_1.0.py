@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # CRISPRStudio is a python software developed to generate CRISPR array figures
 
@@ -148,7 +148,6 @@ def fastaAlign(outFasta):
     subject= outFasta
     outfmt=str(8) # output fasta alignment result in a tabular format
     outFile=outFasta+'_fasta36'
-
     try:
         print('Aligning the spacers with fasta36 aligner')
         path = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -166,7 +165,7 @@ def fastaAlign(outFasta):
                 sys.exit()
 
 # The function extractMatch finds identical spacers by filtering the alignment results
-# and keeping only spacer pairs with a number of mismatches small than or equal to a cutoff
+# and keeping only spacer pairs with a number of mismatches smaller than or equal to a cutoff
 
 def extractMatch(alnFile, cutoff, spacerDict):
     outFile = open(alnFile+'.spacermatch', 'w')
@@ -188,6 +187,7 @@ def extractMatch(alnFile, cutoff, spacerDict):
             outFile.write('%s\t%s\n' % (spacer, spacer))
 
 # The function makeCluster group matching spacers to form clusters of spacers
+# For more information on the clustering algorithm, please visit : https://micans.org/mcl/
 
 def makeCluster(spacermatch):
     outFile= open(spacermatch+'.mcl', 'w')
@@ -222,15 +222,15 @@ def makeCluster(spacermatch):
 # The function gen_hex_colour_code generates random three decimal numbers which will be used for hexadecimal colors
 
 def gen_hex_colour_code():
-   return ''.join([random.choice('0123456789abcdef') for x in range(3)])
+   return str(''.join([random.choice('0123456789abcdef') for x in range(3)]))
 
 # And the function attributeClsColor attributes two random numbers to each cluster
 
 def attributeClsColor(mclFile, spacerDict):
     cl = 0
     spList = []
-    colFrList = ['666','999']
-    colBkList = ['666','999']
+    colFrList = ['999','FFF']
+    colBkList = ['999','FFF']
     outFile = open(mclFile+'.col', 'w')
     with open(mclFile, 'rU') as fl:
         for line in fl:
@@ -245,7 +245,7 @@ def attributeClsColor(mclFile, spacerDict):
                 colBk = gen_hex_colour_code()
             for it in array:
                 if it not in spList:
-                    spacerDict[it].extend([colBk, colFr, clName])
+                    spacerDict[it].extend([str(colBk), str(colFr), clName])
                     spList.append(it)
             outFile.write('%s\t%s\t%s\n' % (colBk, colFr, '\t'.join(array)))
     return spacerDict
@@ -255,8 +255,8 @@ def attributeClsColor(mclFile, spacerDict):
 
 def attributeClsColorRerun(mclFile, spacerDict, finalFile):
     cl = 0
-    colFrList = ['666','999']
-    colBkList = ['666','999']
+    colFrList = ['999','FFF']
+    colBkList = ['999','FFF']
     colDict = {}
     outFile = open(mclFile+'.col', 'w')
     lineList = []
@@ -284,6 +284,14 @@ def attributeClsColorRerun(mclFile, spacerDict, finalFile):
             if oldSpacer[0] == 'T':
                 colBk = colDict[oldSpacer[1]][0]
                 colFr = colDict[oldSpacer[1]][1]
+                if colBk == 'FFF' and cofFr == '999': 
+                    colFr = gen_hex_colour_code()
+                    colBk = gen_hex_colour_code()
+                    while colFr in colFrList:
+                        colFr = gen_hex_colour_code()
+                    while colBk in colBkList:
+                        colBk = gen_hex_colour_code()
+                
                 for spacer in array:
                     item = '%s\t%s\t%s\n' % (colBk, colFr, '\t'.join(array))
                     spacerDict[spacer].extend([colBk, colFr, clName])
@@ -317,7 +325,6 @@ def reformatData(spacerDict, outFile):
     lociCount = 1
     outFile = open(outFile, 'w')
     for spacer in spacerDict:
-        print(lociCount)
         isolate=spacer.split('||')[0]
         CRid = spacer.split('||')[1].split('_')[0]
         apList= spacerDict[spacer]
@@ -327,7 +334,6 @@ def reformatData(spacerDict, outFile):
             if spacerCount > maxSpacerCount:
                 maxSpacerCount = spacerCount
             if lociCount > maxLociCount:
-                print(lociCount, maxLociCount)
                 maxLociCount = lociCount
             spacerCount = 1
             lociCount = 1
@@ -389,7 +395,9 @@ def classifyCluster(isolateList, spacermatch):
     df = pd.read_table(scoreFile, sep='\t', names=['qmatch','smatch','score'])
 
     df_matrix = df.pivot(index='qmatch', columns='smatch', values='score')
+
     df_matrix_adjusted = df_matrix.fillna(0)
+
 
     from skbio.stats.distance import DistanceMatrix
     from numpy import zeros
@@ -441,7 +449,6 @@ def gray(finalDict, isolateList):
 # which can be visualized in graphics editor software.
             
 def generateSVG(finalDict, outFile, maxSpacerCount, maxLociCount, isolateList, grayList):
-    print(maxLociCount)
     outFile = open(outFile, 'w')
     outFile.write('<svg>\n')
     count_yaxis = 0
@@ -502,14 +509,12 @@ def generateSVG(finalDict, outFile, maxSpacerCount, maxLociCount, isolateList, g
 
 def appendSVGfile(finalDict, svgBkup, outFile, maxSpacerCount, maxLociCount, isolateList, grayList):
     outFile = open(outFile, 'w')
+    outFile.write('<svg>')
     oldIsolateList = []
     maxY = 0
     with open(svgBkup, 'rU') as svg:
         for line in svg:
             if line.strip() != '</svg>':
-                outFile.write(line)
-                if re.match('<rect', line):
-                    maxY = int(line.split()[2][3:-1])
                 if re.match('<text', line):
                     array = line.strip().split('>')
                     isolate = array[1][:-6]
@@ -526,8 +531,6 @@ def appendSVGfile(finalDict, svgBkup, outFile, maxSpacerCount, maxLociCount, iso
         count_yaxis = maxY + 10
         maxLen = 0
         for isolate in isolateList:
-            if isolate in oldIsolateList:
-                continue
             if isolate not in finalDict.keys():
                 if i == 0:
                     outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
@@ -549,8 +552,182 @@ def appendSVGfile(finalDict, svgBkup, outFile, maxSpacerCount, maxLociCount, iso
 
                     for spacer in finalDict[isolate][crLocus]:
                         if finalDict[isolate][crLocus][arrayLen-1][6] in grayList:                        
-                            outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#666\" />\n" % (str(count_xaxis), str(count_yaxis)))
+                            outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#FFF\" />\n" % (str(count_xaxis), str(count_yaxis)))
                             outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#999\"/>\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5)))
+                        else:
+                            outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\" />\n" % (str(count_xaxis), str(count_yaxis), finalDict[isolate][crLocus][arrayLen-1][4]))
+                            outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\"/>\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5), finalDict[isolate][crLocus][arrayLen-1][5]))
+                        count_xaxis -= 7.5
+                        arrayLen -= 1
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+        cr_xaxis += (maxLen * -7.5) -20
+    outFile.write("</svg>")
+
+# The function generateSVG writes an SVG file containing the necessary information to generate a vector image
+# which can be visualized in graphics editor software.
+            
+def generateSVGunique(finalDict, outFile, maxSpacerCount, maxLociCount, isolateList, grayList):
+    outFile = open(outFile, 'w')
+    outFile.write('<svg>\n')
+    count_yaxis = 0
+    count_xaxis = 0
+    cr_xaxis = 500
+    lociList = []
+    i = 1
+    while i <= maxLociCount:
+        lociList.append('CRISPR'+str(i))
+        i += 1
+    for i, crLocus in enumerate(lociList):
+        count_yaxis = 0
+        maxLen = 0
+        for isolate in isolateList:
+            if isolate not in finalDict.keys():
+                if i == 0:
+                    # write strain name next to colored squares
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+
+            elif isolate in finalDict.keys():
+                if i == 0 :
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                count_xaxis = cr_xaxis - 7.5
+                if crLocus in finalDict[isolate]:
+                    arrayLen = len(finalDict[isolate][crLocus])
+                    arrayOrientation = finalDict[isolate][crLocus][0][3]
+                    if arrayLen > maxLen:
+                        maxLen = arrayLen
+                    if arrayOrientation == '-':
+                        finalDict[isolate][crLocus] = finalDict[isolate][crLocus][::-1]
+
+                    for spacer in finalDict[isolate][crLocus]:
+                        if len(finalDict[isolate][crLocus][arrayLen-1]) != 7:
+                            print('#####################\n  ERROR:  This spacer was not attributed to a cluster\n    Please verify the gff file or the fasta file and rerun CRISPR_Studio\n    %s\n#####################' % finalDict[isolate][crLocus][arrayLen-1])
+                            sys.exit()  
+                        else:
+                            if finalDict[isolate][crLocus][arrayLen-1][6] in grayList:    
+                                # square coordinates and color                    
+                                outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\" />\n" % (str(count_xaxis), str(count_yaxis), finalDict[isolate][crLocus][arrayLen-1][4]))
+                                # diamond coordinates and color
+                                outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\"/>\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5), finalDict[isolate][crLocus][arrayLen-1][5]))
+                            else:
+                                outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#FFF\"  />\n" % (str(count_xaxis), str(count_yaxis)))
+                                outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#999\" />\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5)))    
+                        count_xaxis -= 7.5
+                        arrayLen -= 1
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+        cr_xaxis += (maxLen * -7.5) -20
+    outFile.write("</svg>")
+
+
+def generateSVGspacerSize(finalDict, outFile, maxSpacerCount, maxLociCount, isolateList, grayList):
+    outFile = open(outFile, 'w')
+    outFile.write('<svg>\n')
+    count_yaxis = 0
+    count_xaxis = 0
+    cr_xaxis = 500
+    lociList = []
+    i = 1
+    while i <= maxLociCount:
+        lociList.append('CRISPR'+str(i))
+        i += 1
+    for i, crLocus in enumerate(lociList):
+        count_yaxis = 0
+        maxLen = 0
+        for isolate in isolateList:
+            if isolate not in finalDict.keys():
+                if i == 0:
+                    # write strain name next to colored squares
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+
+            elif isolate in finalDict.keys():
+                if i == 0 :
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                count_xaxis = cr_xaxis - 7.5
+                if crLocus in finalDict[isolate]:
+                    arrayLen = len(finalDict[isolate][crLocus])
+                    arrayOrientation = finalDict[isolate][crLocus][0][3]
+                    if arrayLen > maxLen:
+                        maxLen = arrayLen
+                    if arrayOrientation == '-':
+                        finalDict[isolate][crLocus] = finalDict[isolate][crLocus][::-1]
+
+                    for spacer in finalDict[isolate][crLocus]:
+                        outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%FFF\"  />\n" % (str(count_xaxis), str(count_yaxis)))
+                        outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#999\" />\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5)))
+                        outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.2\" height=\"3\" font-family=\"Verdana\" font-size=\"4.5\" font-weight=\"bold\" fill=\"black\">%s</text>\n" % (str(count_xaxis+1), str(count_yaxis+5.5), finalDict[isolate][crLocus][arrayLen-1][2]))
+
+                        count_xaxis -= 7.5
+                        arrayLen -= 1
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+        cr_xaxis += (maxLen * -7.5) -20
+    outFile.write("</svg>")
+
+# The function appendSVGfile is executed when the -r option is added (in combination with the attributeClsColorRerun function)
+# It will append a preexisting svg file with new sequences, by keeping the original svg the same and adding new squares at the bottom.
+
+def appendSVGfileUnique(finalDict, svgBkup, outFile, maxSpacerCount, maxLociCount, isolateList, grayList):
+    outFile = open(outFile, 'w')
+    outFile.write('<svg>')
+    oldIsolateList = []
+    maxY = 0
+    with open(svgBkup, 'rU') as svg:
+        for line in svg:
+            if line.strip() != '</svg>':
+                continue
+                if re.match('<text', line):
+                    array = line.strip().split('>')
+                    isolate = array[1][:-6]
+                    oldIsolateList.append(isolate)
+    count_yaxis = maxY
+    count_xaxis = 0
+    cr_xaxis = 500
+    lociList = []
+    i = 1
+    while i <= maxLociCount:
+        lociList.append('CRISPR'+str(i))
+        i += 1
+    for i, crLocus in enumerate(lociList):
+        count_yaxis = maxY + 10
+        maxLen = 0
+        for isolate in isolateList:
+            if isolate in oldIsolateList:
+                continue
+            if isolate not in finalDict.keys():
+                oldIsolateList.append(isolate)
+                if i == 0:
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                    count_yaxis += 10
+                else:
+                    count_yaxis += 10
+
+            elif isolate in finalDict.keys():
+                oldIsolateList.append(isolate)
+                if i == 0 :
+                    outFile.write("<text x=\"%s\" y=\"%s\" width=\"1.6\" height=\"4\" font-family=\"Verdana\" font-size=\"7\" fill=\"black\">%s</text>\n" % (cr_xaxis, str(count_yaxis + 6.5), isolate))
+                count_xaxis = cr_xaxis - 7.5
+                if crLocus in finalDict[isolate]:
+                    arrayLen = len(finalDict[isolate][crLocus])
+                    arrayOrientation = finalDict[isolate][crLocus][0][3]
+                    if arrayLen > maxLen:
+                        maxLen = arrayLen
+                    if arrayOrientation == '-':
+                        finalDict[isolate][crLocus] = finalDict[isolate][crLocus][::-1]
+
+                    for spacer in finalDict[isolate][crLocus]:
+                        if finalDict[isolate][crLocus][arrayLen-1][6] not in grayList:                        
+                            outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#FFF\" />\n" % (str(count_xaxis), str(count_yaxis)))
+                            outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#999\" />\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5)))
                         else:
                             outFile.write("<rect x=\"%s\" y=\"%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\" />\n" % (str(count_xaxis), str(count_yaxis), finalDict[isolate][crLocus][arrayLen-1][4]))
                             outFile.write("<polygon points=\"%s,%s %s,%s %s,%s %s,%s\" stroke=\"black\" stroke-width=\"0.2\" width=\"7.5\" height=\"7.5\" style=\"fill:#%s\"/>\n" % (str(count_xaxis + 1), str(count_yaxis + 3.75),  str(count_xaxis + 3.75), str(count_yaxis + 1), str(count_xaxis + 6.5), str(count_yaxis + 3.75), str(count_xaxis +3.75), str(count_yaxis + 6.5), finalDict[isolate][crLocus][arrayLen-1][5]))
@@ -568,11 +745,13 @@ def main():
                         help="GFF3 file generated with CRISPRDetect (Local installation or web platform http://brownlabtools.otago.ac.nz/CRISPRDetect/predict_crispr_array.html).", metavar="FILE")
     parser.add_argument("-l", "--listOfIsolates", dest='isolateFile', metavar='FILE', 
                         help="CRISPR_Studio will generate the figure with a subset of isolates listed in the file  (Optional: By default, CRISPR_Studio will generate a figure with all the isolates).")
-    parser.add_argument("-g", '--grayOut', dest='gray', help='The unique spacers will be grayed (Optional: by default, CRISPR_Studio attributes a unique color to each group of spacer.)', action='store_true')
+    parser.add_argument("-gU", '--grayOutUnique', dest='gray', help='The unique spacers will be grayed (Optional: by default, CRISPR_Studio attributes a unique color to each group of spacer and unique spacers.)', action='store_true')
+    parser.add_argument("-gS", '--grayOutSimilar', dest='unique', help='The conserved spacers will be grayed (Optional: by default, CRISPR_Studio attributes a unique color to each group of spacer and unique spacers.)', action='store_true')
     parser.add_argument("-f", '--checkFasta', dest='checkFasta', help='Verification of the fasta file generated from the GFF file will be skipped if this flag is provided. The verification is mainly based on the length of the spacer sequences. If a spacer is 1.5 time shorter or longer than the average spacer size of the dataset, a warning is raised and the script stops (Verification is ran by default). Correction can be either made in the initial gff file or in the fasta file. If the later, provide the name of the fasta file after the flag (ex. -f corrected_sequences.fasta', action='store_true')
-    parser.add_argument("-s", '--sort', dest='sort', help='The order of the isolates in the figure: Available option: CRISPRDetect, DistMatrix or  File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. DistMatrix = Order extracted from a distance matrix based on the similarity of the arrays in the isolates. File = Order privided in a single column file with the isolates names as the should appear in the figure. The option -l override this option (Default: DistMatrix)')
+    parser.add_argument("-s", '--sort', dest='sort', help='The order of the isolates in the figure: Available option: CRISPRDetect, DistMatrix or File providing a list of the isolates in the desired order. CRISPRDetect = order in the gff file. DistMatrix = Order extracted from a distance matrix based on the similarity of the arrays in the isolates. File = Order privided in a single column file with the isolates names as the should appear in the figure. The option -l override this option (Default: DistMatrix)')
     parser.add_argument("-r", '--rerun', dest='rerun', help='Use this option to keep the same color attributed to the spacer during a previous analysis', action='store_true')
     parser.add_argument("-c", '--cutoff', dest='cutoff', help='Set to score cutoff for pairing of the spacers (default = 2)')
+    parser.add_argument('-n', '--spacerSize', dest='size', help='Show the size of the spacers over the boxed diamonds. We recommend to use this option only for experimental analysis of the data', action='store_true')
     args = parser.parse_args()
     appendSVG = False
     if not len(sys.argv) > 1:
@@ -601,7 +780,15 @@ def main():
         else:
             spacerDict, isolateList, averageLength, crArrayList = spacerExtract(inFile)
             writeFasta(spacerDict, outFasta)
-
+    
+    if args.gray and args.unique:
+        print('\n\n\n\
+        #################  ERROR #################\n\n\
+        The options -g and -u are incompatible and \n\
+        can\'t be used together\n\n\
+        ##########################################\n\n')
+        parser.print_help()
+        sys.exit()
     if os.path.isfile(outFasta+'_fasta36'):
         rerunAln = input('CRISPRStudio detected that the alignment file %s already exist. Do you want to re-align the spacer? (y/n) ' % (outFasta+'_fasta36'))
         while rerunAln.lower() != 'y' and rerunAln.lower() != 'yes' and rerunAln.lower() != 'n' and rerunAln.lower() != 'no':
@@ -619,18 +806,11 @@ def main():
     makeCluster(outFasta+'_fasta36.spacermatch')
 
     if args.rerun:
-        os.rename(outFasta+'_fasta36.spacermatch.mcl.svg',outFasta+'_fasta36.spacermatch.mcl.svg.bkup')
-        print('\n\tTHE FLAG -r (--rerun) WAS USED. The color used to represent the spacer of the first figure will be preserved.\n\
-CRISPR_Studio can append the new CRISPR loci to the initial figure.')
-        appendSVG = input('Do you want to append the new spacer at the bottom of the initial figure? (y/n) ')
-        while len(appendSVG) < 1:
-            appendSVG = input('Please provide an answer. Do you want to append the new spacer at the bottom of the initial figure? (y/n)')   
-        if appendSVG.lower() == 'n' or appendSVG.lower() == 'no':
-            clDict= attributeClsColorRerun( outFasta+'_fasta36.spacermatch.mcl', spacerDict, outFasta+'_fasta36.spacermatch.mcl.final')
-            appendSVG = False
-        elif appendSVG.lower() == 'y' or appendSVG.lower() == 'yes':
-            clDict = attributeClsColorRerun( outFasta+'_fasta36.spacermatch.mcl', spacerDict, outFasta+'_fasta36.spacermatch.mcl.final')
-            appendSVG = True
+        os.rename(outFasta+'_fasta36.spacermatch.mcl.svg',outFasta+'_fasta36.spacermatch.mcl.bkup.svg')
+        print('\n\tTHE FLAG -r (--rerun) WAS USED. The color used to represent the spacer of the first figure will be preserved.')
+        appendSVG = True
+        clDict= attributeClsColorRerun( outFasta+'_fasta36.spacermatch.mcl', spacerDict, outFasta+'_fasta36.spacermatch.mcl.final')
+        
     else:
         clDict = attributeClsColor(outFasta+'_fasta36.spacermatch.mcl', spacerDict)
 
@@ -647,25 +827,36 @@ CRISPR_Studio can append the new CRISPR loci to the initial figure.')
     else:
         if not args.sort:
             args.sort = 'DistMatrix'
-        if args.sort == 'CRISPRDetect':
+
+        if args.sort == 'crisprdetect':
             orderedIsolates = isolateList
-        elif args.sort == 'DistMatrix':
+        elif args.sort.lower() == 'distmatrix':
             orderedIsolates = classifyCluster(finalDict, outFasta+'_fasta36.spacermatch')
-        else:
+        elif args.sort.lower() == 'file': 
             orderedIsolates = []
-            with open(args.sort, 'rU') as fl:
+            orderedFile = input("Please provide the name of the file with the name of the isoltes in the desired order :")
+            with open(orderedFile, 'rU') as fl:
                 for line in fl:
                     orderedIsolates.append(line.strip())
-    print(finalDict)            
-    if args.gray:
+        
+    if args.gray or args.unique:
         grayList = gray(finalDict, orderedIsolates)
     else:
         grayList = []
-    if appendSVG == False:
-        generateSVG(finalDict, outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
-    elif appendSVG == True:
-        appendSVGfile(finalDict, outFasta+'_fasta36.spacermatch.mcl.svg.bkup', outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
-        
+
+    if args.unique:  
+        if appendSVG == True:
+            appendSVGfileUnique(finalDict, outFasta+'_fasta36.spacermatch.mcl.bkup.svg', outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
+        else:
+            generateSVGunique(finalDict, outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
+    elif args.size:
+        generateSVGspacerSize(finalDict, outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
+    else:     
+        if appendSVG == True:
+            appendSVGfile(finalDict, outFasta+'_fasta36.spacermatch.mcl.bkup.svg', outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
+        else:
+            generateSVG(finalDict, outFasta+'_fasta36.spacermatch.mcl.svg', maxSpacerCount, maxLociCount, orderedIsolates, grayList)
+    
 if __name__=='__main__':
 
     main()
