@@ -15,7 +15,7 @@ echo "Installation of fasta36..."
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     wget http://faculty.virginia.edu/wrpearson/fasta/CURRENT/fasta-36.3.8g-linux64.tar.gz;
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    wget http://faculty.virginia.edu/wrpearson/fasta/CURRENT/fasta-36.3.8g-macosxuniv.tar.gz;
+    curl -O http://faculty.virginia.edu/wrpearson/fasta/CURRENT/fasta-36.3.8g-macosxuniv.tar.gz;
 else
     echo -e "OS not handled";
     exit 1;
@@ -41,18 +41,9 @@ if [[ "$(python --version 2>&1)" == *" 3."* ]] || [[ "$(python3 --version 2>&1)"
     else
         echo "Please install pip and re-install CRISPR Studio or install manually"; exit 1;
     fi
-#elif [[ "$(python3 --version 2>&1)" == *" 3."* ]]; then
-#    pip --version && pip install scikit-bio pandas scipy numpy \
-#    || echo "Please install pip and re-install CRISPRStudio or install manually"; exit 1;
+
 else
     echo "Error: Python 3 is not installed or is not the default interpreter. Fix this and re-install CRISPR Studio";
     exit 1;
 fi
 echo -e "Creating CRISPR Studio executable" && ln -s  CRISPR_Studio_1.0.py CRISPR_Studio && chmod u+x ./CRISPR_Studio
-
-
-
-
-
-
-
