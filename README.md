@@ -15,19 +15,23 @@ git clone https://github.com/moineaulab/CRISPRStudio.git
 cd CRISPRStudio
 ./Install.sh
 ```
-In case this failed, you can try to fix it, raise an issue on the github page or perform a manual installation.
+In case of errors, you can perform a manual installation or raise an issue on the GitHub page. See the troubleshooting section for installation tips.
 
 ## Manual installation
 Download this git repository and install the following dependencies:
 
 - Local installation of fasta36
 
-fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/ (make sure that the folder with the executable was added in your path)
+fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/
 
-- The following python modules: scikit-bio, pandas, scipy and numpy which can be installed through:
+Help with fasta36 installation can be found here (follow step 1 to 3): https://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
+
+Make sure you move the fasta36 file under the “CRISPRStudio-master”   “tools” directory
+
+Finally, download the python modules from your terminal:
 
 ```
-pip3 install scikit-bio pandas scipy numpy
+pip3 install scipy numpy pandas scikit-bio
 ```
 
 # Basic command
