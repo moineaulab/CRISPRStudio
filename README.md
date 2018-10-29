@@ -9,6 +9,7 @@ It runs on any Unix operating system equipped with Python 3.6.x or older and the
 # Installation
 
 ## Automatic installation
+
 A script is provided to install the required software and python modules (python3 and pip should already be installed on your system).
 ```
 git clone https://github.com/moineaulab/CRISPRStudio.git
@@ -18,13 +19,16 @@ cd CRISPRStudio
 In case of errors, you can perform a manual installation or raise an issue on the GitHub page. See the troubleshooting section for installation tips.
 
 ## Manual installation
+
 Download this git repository and install the following dependencies:
 
 - Local installation of fasta36
 
 fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT/
 
-Help with fasta36 installation can be found here (follow step 1 to 3): https://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
+Help with fasta36 installation can be found here (follow step 1 to 3): 
+
+https://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
 
 Make sure you move the fasta36 file under the “CRISPRStudio-master” ->  “tools” directory
 
@@ -37,6 +41,7 @@ pip3 install scipy numpy pandas scikit-bio
 ## Troubleshooting
 
 1.	Incompatibility
+
 There seems to be incompatibility issues with scikit-bio and more recent versions of python3. Installation should work up to python 3.6.x, but our test was unsuccessful with 3.7.x. Check your python version by running:
 
 ```
@@ -49,6 +54,7 @@ https://stackoverflow.com/questions/3819449/how-to-uninstall-python-2-7-on-a-mac
 https://apple.stackexchange.com/questions/237430/how-to-install-specific-version-of-python-on-os-x
 
 2.	Upgrade pip
+
 Older versions of pip have caused installation issues. If the python modules installation is difficult, try upgrading your pip:
 
 ```
@@ -56,6 +62,7 @@ pip3 install --upgrade pip
 ```
 
 3.	scikit-bio dependencies
+
 scikit-bio requires specific versions of other python modules. In one of our test, installation was successful after uninstalling pandas, scipy and numpy and leaving scikit-bio take care of installing its necessary versions. First check if you have pandas, scipy and numpy already installed:
 
 ```
