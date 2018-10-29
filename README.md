@@ -4,7 +4,7 @@
 
 CRISPRStudio is a program developed to facilitate and accelerate CRISPR array visualization. It works by first comparing spacers sequence homology in a dataset, then assigning a two-color-code to each cluster of spacers and finally writing an svg file, which can be opened in graphics vector editor. 
 
-It runs on any Unix operating system equipped with the software requirements mentioned below. If your computer runs Windows 10, you can also install the Ubuntu terminal.
+It runs on any Unix operating system equipped with Python 3.6.x or older and the software requirements mentioned below. If your computer runs Windows 10, you can also install the Ubuntu terminal.
 
 # Installation
 
@@ -26,13 +26,54 @@ fasta36 can be downloaded at http://faculty.virginia.edu/wrpearson/fasta/CURRENT
 
 Help with fasta36 installation can be found here (follow step 1 to 3): https://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
 
-Make sure you move the fasta36 file under the “CRISPRStudio-master”   “tools” directory
+Make sure you move the fasta36 file under the “CRISPRStudio-master” ->  “tools” directory
 
 Finally, download the python modules from your terminal:
 
 ```
 pip3 install scipy numpy pandas scikit-bio
 ```
+
+## Troubleshooting
+
+1.	Incompatibility
+There seems to be incompatibility issues with scikit-bio and more recent versions of python3. Installation should work up to python 3.6.x, but our test was unsuccessful with 3.7.x. Check your python version by running:
+
+```
+python --version
+```
+
+If your python version is too recent, you can try uninstalling it and reinstalling an older version. See these two links for step by step explanations:
+
+https://stackoverflow.com/questions/3819449/how-to-uninstall-python-2-7-on-a-mac-os-x-10-6-4
+https://apple.stackexchange.com/questions/237430/how-to-install-specific-version-of-python-on-os-x
+
+2.	Upgrade pip
+Older versions of pip have caused installation issues. If the python modules installation is difficult, try upgrading your pip:
+
+```
+pip3 install --upgrade pip
+```
+
+3.	scikit-bio dependencies
+scikit-bio requires specific versions of other python modules. In one of our test, installation was successful after uninstalling pandas, scipy and numpy and leaving scikit-bio take care of installing its necessary versions. First check if you have pandas, scipy and numpy already installed:
+
+```
+pip3 list
+```
+
+Then uninstall the packages:
+
+```
+pip3 uninstall pandas scipy numpy
+```
+
+And install scikit-bio only:
+
+```
+pip3 install scikit-bio
+```
+
 
 # Basic command
 
